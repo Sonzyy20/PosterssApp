@@ -1,19 +1,37 @@
 <script setup>
 import { ref } from 'vue';
 import { account, ID } from '../lib/appwrite';
+import { UseAuthStore } from '~/store/autchSotre';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import App from '~/app.vue';
+
+
+const pinia = createPinia()
+const app = createApp(App)
+app.use(pinia)
+
+
 const router = useRouter();
 const loggedInUser = ref(null);
 const email = ref('');
 const password = ref('');
 const name = ref('');
+const statusChecker = ref(null);
 
+const AStore = UseAuthStore();
 
 const login = async (email, password) => {
   await account.createEmailPasswordSession(email, password);
   loggedInUser.value = await account.get();
-  console.log(loggedInUser)
- 
-  console.log(loggedInUser.status)
+  const statusChecker = await account.get();
+  if(statusChecker){
+    AStore.set({
+      email: statusChecker.email,
+      name: statusChecker.name,
+      status: statusChecker.status,
+    })
+  }
   await router.push('/')
 };
 
