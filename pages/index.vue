@@ -6,6 +6,7 @@ import { createApp } from 'vue';
 import App from '~/app.vue';
 
 
+
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
@@ -15,6 +16,7 @@ const router = useRouter();
 const AStore = UseAuthStore();
 
 const name = AStore.myName
+console.log(AStore.isAuth)
 const logout = async () => {
   await account.deleteSession('current');
   // loggedInUser.value = null;
@@ -22,19 +24,33 @@ const logout = async () => {
   await router.push('/login')
 };
 
+if(!AStore.isAuth){
+   navigateTo ("/login")
+   console.log(AStore.isAuth)
+}
+
 console.log(name)
-console.log(AStore.isAuth)
 </script>
 
 <template>
-    <div class="flex justify-center mt-2">
-        <UiInput class="w-1/2 flex justify-center" placeholder="Searching"></UiInput>
-        <p>{{`Hi our dear ${name}`}}</p>
-    </div>
-    
-
-    <UiButton type="button" variant="destructive"  @click="logout">
+  <div class="top flex justify-between w-full mt-2">
+    <UiButton type="button" variant="destructive" class="ml-5"  @click="logout">
         Logout
       </UiButton>
+
+    <div class="flex  justify-center">
+      <UiInput class="w-96" placeholder="Searching"></UiInput>
+    </div>
+      <div class="profie flex justify-center items-center mr-16">
+
+        <UiButton variant="primary" class="custom_button border-solid border-2 p-2 border-black rounded-full items-center">Hello: {{ AStore.myName }}</UiButton>
+      </div>
+    </div>
   
 </template>
+
+<style scoped>
+.custom_button{
+  cursor: pointer;
+}
+</style>
