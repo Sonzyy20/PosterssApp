@@ -10,6 +10,7 @@ import App from '~/app.vue';
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
+const AStore = UseAuthStore();
 
 
 const router = useRouter();
@@ -19,7 +20,6 @@ const password = ref('');
 const name = ref('');
 const statusChecker = ref(null);
 
-const AStore = UseAuthStore();
 
 const login = async (email, password) => {
   await account.createEmailPasswordSession(email, password);
@@ -32,6 +32,8 @@ const login = async (email, password) => {
       status: statusChecker.status,
     })
   }
+  console.log(statusChecker.status);
+  console.log(AStore.isAuth)
   await router.push('/')
 };
 

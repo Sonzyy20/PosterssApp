@@ -23,12 +23,16 @@ const logout = async () => {
 };
 
 console.log(name)
+console.log(AStore.isAuth)
 </script>
 
 <template>
     <div class="flex justify-center mt-2">
         <UiInput class="w-1/2 flex justify-center" placeholder="Searching"></UiInput>
+        <p>{{`Hi our dear ${name}`}}</p>
     </div>
+    
+
     <UiButton type="button" variant="destructive"  @click="logout">
         Logout
       </UiButton>
