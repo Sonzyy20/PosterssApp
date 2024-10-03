@@ -19,7 +19,8 @@ export const UseAuthStore = defineStore(' auth',{
     state: () => deffaultValue,
     getters: {
         isAuth: state => state.user.status,
-        myName: state => state.user.name
+        myName: state => state.user.name,
+        
     },
     actions: {
         clear(){
