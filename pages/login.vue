@@ -18,14 +18,22 @@ const loggedInUser = ref(null);
 const email = ref('');
 const password = ref('');
 const name = ref('');
+const usernmae = ref('');
 const statusChecker = ref(null);
 
 const AStore = UseAuthStore();
 
 const login = async (email, password) => {
-  await account.createEmailPasswordSession(email, password);
-  loggedInUser.value = await account.get();
-  const statusChecker = await account.get();
+  console.log("1")
+  let promise
+  let statusChecker
+  try{
+
+    promise = await account.createEmailPasswordSession(email, password);
+    statusChecker = await account.get();
+    console.log("sucsess")
+    console.log(promise)
+
   if(statusChecker){
     AStore.set({
       email: statusChecker.email,
@@ -36,6 +44,13 @@ const login = async (email, password) => {
   console.log(statusChecker.status);
   console.log(AStore.isAuth)
   await router.push('/')
+  }catch (error){
+    console.log(error)
+    console.log("u got error")
+  }
+  
+
+  
 };
 
 const register = async () => {

@@ -33,17 +33,24 @@ console.log(name)
 </script>
 
 <template>
-  <div class="top flex justify-between w-full mt-2">
-    <UiButton type="button" variant="destructive" class="ml-5"  @click="logout">
+  <div class="flex items-center justify-between w-full mt-2">
+
+    <UiButton type="button" variant="destructive" class="btn-left ml-5 px-4 py-2"  @click="logout">
         Logout
       </UiButton>
 
-    <div class="flex  justify-center">
-      <UiInput class="w-96" placeholder="Searching"></UiInput>
-    </div>
-      <div class="profie flex justify-center items-center mr-16">
+      <div class="flex-grow"></div>
 
-        <UiButton variant="primary" class="custom_button border-solid border-2 p-2 border-black rounded-full items-center">Hello: {{ AStore.myName }}</UiButton>
+    <div class="flex-grow">
+      <UiInput class="w-full max-w-sm px-4 py-2 border rounded-lg" placeholder="Searching"></UiInput>
+    </div>
+     
+
+    
+    <div class="flex mr-8 ml-0">
+        <UiButton variant="primary" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black mr-3">Create Post</UiButton>
+
+        <UiButton variant="primary" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black">Hello: {{ AStore.myName }}</UiButton>
       </div>
     </div>
   
