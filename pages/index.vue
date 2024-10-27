@@ -1,20 +1,20 @@
 <script lang="ts" setup>
+import {PostTredsCards} from '#components';
 import { account, ID } from '../lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
-import ThreadsCards from '~/components/ThreadsCards.vue';
 
 
+const posts = ref([])
 
-const posts = ref()
-
-onMounted(async() => {
-  const result = await fetch("https://jsonplaceholder.typicode.com/posts")
-  const data = result.json()
-  posts.value = data;
+onMounted(async() =>{
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts/")
+  const data = await response.json()
+  posts.value = data
 })
+
 
 const pinia = createPinia()
 const app = createApp(App)
@@ -33,20 +33,19 @@ const logout = async () => {
   await router.push('/login')
 };
 
-if(!AStore.isAuth){
-   navigateTo ("/login")
-   console.log(AStore.isAuth)
-}
+// if(!AStore.isAuth){
+//    navigateTo ("/login")
+//    console.log(AStore.isAuth)
+// }
+
 
 console.log(name)
 </script>
 
 <template>
-  <div class="shaorma">
+  <div class="flex items-center justify-between w-full mt-2">
 
-    <div class="flex items-center justify-between w-full mt-2">
-      
-      <UiButton type="button" variant="destructive" class="btn-left ml-5 px-4 py-2"  @click="logout">
+    <UiButton type="button" variant="destructive" class="btn-left ml-5 px-4 py-2"  @click="logout">
         Logout
       </UiButton>
       
@@ -64,11 +63,16 @@ console.log(name)
         <UiButton variant="primary" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black">Hello: {{ AStore.myName }}</UiButton>
       </div>
     </div>
-    <div>
-      <ThreadsCards v-for="post in posts" :key="post.id" :post="post" />
-    </div>
+    
     
   </div>
+  
+    <div class="main_container flext justify-center">
+      <div class="cards flex flex-col flex-di items-center ">
+
+        <PostTredsCards v-for="post in posts" :key="post.id" :post="post"></PostTredsCards>
+      </div>
+    </div>
   
 </template>
 
