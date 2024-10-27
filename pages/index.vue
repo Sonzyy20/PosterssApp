@@ -64,15 +64,16 @@ console.log(name)
       </div>
     </div>
     
-    
-  </div>
+    <div class="main_container flext justify-center mt-3">
+      <div class="cards flex flex-col flex-di items-center">
   
-    <div class="main_container flext justify-center">
-      <div class="cards flex flex-col flex-di items-center ">
-
         <PostTredsCards v-for="post in posts" :key="post.id" :post="post"></PostTredsCards>
       </div>
+
     </div>
+    
+  
+  
   
 </template>
 
