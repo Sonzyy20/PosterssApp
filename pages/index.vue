@@ -46,11 +46,11 @@ app.use(pinia)
 // }
 
 
-console.log(name)
+// console.log(name)
 </script>
 
 <template>
-  <div class="flex items-center justify-between w-full mt-2 mb-5">
+  <div class="flex items-center justify-center  w-full mt-2 mb-5">
 
    
   
