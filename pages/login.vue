@@ -6,6 +6,9 @@ import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
 
+definePageMeta({
+  layout: false
+});
 
 const pinia = createPinia()
 const app = createApp(App)
