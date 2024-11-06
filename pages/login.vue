@@ -34,6 +34,8 @@ const login = async (email, password) => {
 
     promise = await account.createEmailPasswordSession(email, password);
     statusChecker = await account.get();
+    console.log(statusChecker)
+    console.log(statusChecker.$id)
     console.log("sucsess")
     console.log(promise)
 
@@ -42,6 +44,7 @@ const login = async (email, password) => {
       email: statusChecker.email,
       name: statusChecker.name,
       status: statusChecker.status,
+      id: statusChecker.$id
     })
   }
   console.log(statusChecker.status);

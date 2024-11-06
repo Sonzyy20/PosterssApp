@@ -4,6 +4,7 @@ interface autchStoreFields {
     email: string,
     name: string, 
     status: boolean,
+    id: string
 }
 
 const deffaultValue: {user: autchStoreFields} = {
@@ -12,6 +13,7 @@ const deffaultValue: {user: autchStoreFields} = {
         email: '',
         name: '',
         status: false,
+        id: ''
     }
 }
 
@@ -20,6 +22,7 @@ export const UseAuthStore = defineStore(' auth',{
     getters: {
         isAuth: state => state.user.status,
         myName: state => state.user.name,
+        userId: state => state.user.id
         
     },
     actions: {

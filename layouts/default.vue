@@ -16,7 +16,7 @@ app.use(pinia)
 const router = useRouter(); 
 const AStore = UseAuthStore();
 
-const name = AStore.myName
+
 console.log(AStore.isAuth)
 const logout = async () => {
   await account.deleteSession('current');
@@ -25,7 +25,7 @@ const logout = async () => {
   await router.push('/login')
 
 }
-const createPosts = async () => {
+const redirectToPosts = async () => {
   await navigateTo('/createPost')
   console.log("welcome")}
 
@@ -57,9 +57,10 @@ const createPosts = async () => {
 
         <div class="flex  ml-0">
           
-          <UiButton  type="button" @click="createPosts" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black mr-3 bg-slate-50 hover:bg-slate-900 hover:text-white hover:cursor-pointer">Create Post</UiButton>
+          <UiButton  type="button" @click="redirectToPosts" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black mr-3 bg-slate-50 hover:bg-slate-900 hover:text-white hover:cursor-pointer">Create Post</UiButton>
           
           <UiButton class="btn-right bg-slate-50 text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black">Hello: {{ AStore.myName }}</UiButton>
+          
         </div>
       </div>
     </div>

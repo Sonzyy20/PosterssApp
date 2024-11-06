@@ -29,7 +29,7 @@ app.use(pinia)
 
 
 // const router = useRouter(); 
-// const AStore = UseAuthStore();
+const AStore = UseAuthStore();
 
 // const name = AStore.myName
 // console.log(AStore.isAuth)
@@ -56,7 +56,7 @@ app.use(pinia)
   
     <div class="main_container flext justify-center">
       <div class="cards flex flex-col flex-di items-center ">
-
+        <p>your id {{ AStore.userId }}</p>
         <PostTredsCards v-for="post in posts" :key="post.id" :post="post"></PostTredsCards>
       </div>
     </div>
