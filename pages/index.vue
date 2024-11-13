@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {PostTredsCards} from '#components';
-import { account, ID } from '../lib/appwrite';
+import { account, ID, database } from '../lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
@@ -10,11 +10,19 @@ import App from '~/app.vue';
 //   layout: false
 // })
 
+useSeoMeta({
+  title:'posts'
+})
+
 const posts = ref([])
 // const users = ref([])
 
 onMounted(async() =>{
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts/")
+  const result = await database.listDocuments(
+    '6728f84b000008442afe', // databaseId
+    '6728f8580020cd8ac5b8', // collectionId
+    [] // queries (optional)
+);
   const data = await response.json()
   posts.value = data
 //   const results = await fetch(`https://jsonplaceholder.typicode.com/users/`)
@@ -40,10 +48,15 @@ const AStore = UseAuthStore();
 //   await router.push('/login')
 // };
 
-// if(!AStore.isAuth){
-//    navigateTo ("/login")
-//    console.log(AStore.isAuth)
-// }
+if(!AStore.isAuth){
+  if(process.client){
+    
+    window.alert('you are not loginned');
+    navigateTo ("/login")
+  }
+  
+   console.log(AStore.isAuth)
+}
 
 
 // console.log(name)

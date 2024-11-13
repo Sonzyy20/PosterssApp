@@ -31,6 +31,7 @@ const createPost = async () => {
 </script>
 <template>
     <div class="w-full flex flex-col items-center justify-center">
+        <p>{{ Astore.userId }}</p>
         <form @submit.prevent="createPost">
             <input v-model="title" type="text" required placeholder="Head of post"/>
             <UiTextarea v-model="content" placeholder="Lef your comment here"></UiTextarea>

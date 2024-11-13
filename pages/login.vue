@@ -52,10 +52,10 @@ const login = async (email, password) => {
   await router.push('/')
   }catch (error){
     console.log(error)
-    console.log("u got error")
+    window.alert("Wrong email or password")
   }
   
-
+console.log(login.error)
   
 };
 
@@ -71,25 +71,29 @@ const logout = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="w-full h-[500px] flex justify-center items-center flex-col">
     <p>
       {{ loggedInUser ? `Logged in as ${AStore.myName}` : 'Not logged in' }}
     </p>
 
-    <form>
-      <UiInput class="w-1/2 mb-5" type="email" placeholder="Email" v-model="email" />
-      <UiInput class="w-1/2 mb-5" type="password" placeholder="Password" v-model="password" />
-      <UiInput class="w-1/2 mb-5" type="text" placeholder="Name" v-model="name" />
-      <UiButton class="mr-3" type="button" @click="login(email, password)">Login</UiButton>
-      <UiButton class="mr-3" type="button" @click="register">
-        Register
-      </UiButton>
-      <UiButton  v-if="!loggedInUser" variant="disabled" class="line-through"  @click="logout">
-        Logout
-      </UiButton>
-      <UiButton type="button" v-else variant="destructive"  @click="logout">
-        Logout
-      </UiButton>
+    <form class="w-[50%]">
+      <UiInput class="w-[100%] mb-5" type="email" placeholder="Email" v-model="email" />
+      <UiInput class="w-[100%] mb-5" type="password" placeholder="Password" v-model="password" />
+      <UiInput class="w-[100%] " type="text" placeholder="Name" v-model="name" />
+      <p class="text-red-400" v-if="!login.error">wrong password bitch</p>
+      <div class="buttons flex w-full justify-between">
+
+        <UiButton class="mr-3"  type="button" @click="login(email, password)">Login</UiButton>
+        <UiButton class="mr-3" type="button" @click="register">
+          Register
+        </UiButton>
+        <UiButton  v-if="!loggedInUser" variant="disabled" class="line-through"  @click="logout">
+          Logout
+        </UiButton>
+        <UiButton type="button" v-else variant="destructive"  @click="logout">
+          Logout
+        </UiButton>
+      </div>
     </form>
   </div>
 </template>
