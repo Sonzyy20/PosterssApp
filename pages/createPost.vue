@@ -37,6 +37,7 @@ const createPost = async () => {
             <UiTextarea v-model="content" placeholder="Lef your comment here"></UiTextarea>
             <UiButton class="hover:cursor-pointer" type="button" @click="createPost">Create Post</UiButton>
         </form>
+        <p>htpmlsdf</p>
     </div>
 </template>
 
