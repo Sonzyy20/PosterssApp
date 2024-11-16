@@ -23,7 +23,7 @@ onMounted(async() =>{
     '6728f8580020cd8ac5b8', // collectionId
     [] // queries (optional)
 );
-  const data = await response.json()
+  const data = await result.json()
   posts.value = data
 //   const results = await fetch(`https://jsonplaceholder.typicode.com/users/`)
 // const data2 = await results.json()
