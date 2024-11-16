@@ -11,9 +11,8 @@ const props = defineProps({
 })
 
 
-const results = await fetch(`https://jsonplaceholder.typicode.com/users/${props.post.userId}`)
-const data = await results.json()
-const user = data
+
+
 </script>
 
 <template>
@@ -21,10 +20,10 @@ const user = data
     <div class="flex flex-col items-center" v-if="post">
       <h4 class="text-2xl font-bold mb-1">{{ post.title }} </h4>
       <div class="min-w-[700px] border border-gray-200"></div>
-      <h1>{{ post.body }}</h1>
+      <h1>{{ post.content }}</h1>
       <div class="w-full flex justify-end">
         <p class="text-slate-400">Author:</p>
-        <p class="text-slate-800">{{ `  ${user.name}` }}</p>
+        <p class="text-slate-800">{{ `  ${post.userName}` }}</p>
       </div>
     </div>
     

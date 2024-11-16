@@ -23,11 +23,13 @@ onMounted(async() =>{
     '6728f8580020cd8ac5b8', // collectionId
     [] // queries (optional)
 );
-  const data = await result
-  posts.value = data
-//   const results = await fetch(`https://jsonplaceholder.typicode.com/users/`)
-// const data2 = await results.json()
-//   users.value = data2
+  const data = await result;
+  console.log(JSON.stringify(data))
+  const response = JSON.stringify(data)
+  posts.value = data.documents
+//   const results = await fetch(`https://jsonplaceholder.typicode.com/posts`)
+// posts.value = await results.json()
+  
 })
 
 
@@ -48,15 +50,42 @@ const AStore = UseAuthStore();
 //   await router.push('/login')
 // };
 
-if(!AStore.isAuth){
+onMounted(async() => {
+  console.log("account get Check")
+  const loggedPerson = await account.get()
+  console.log(loggedPerson)
+  if(loggedPerson){
+    AStore.set({
+      email: loggedPerson.email,
+      name: loggedPerson.name,
+      status: loggedPerson.status,
+      id: loggedPerson.$id
+    })
+    if(!AStore.isAuth){
+  console.log("authText")
   if(process.client){
     
     window.alert('you are not loginned');
     navigateTo ("/login")
   }
   
-   console.log(AStore.isAuth)
+   console.log(AStore.isAuth) 
 }
+
+    }
+  })
+
+  // onMounted(async() => {
+  // const loggedPerson = await account.get()
+  // console.log(loggedPerson)
+  // if(loggedPerson){
+  //   AStore.clear()
+  //   console.log(AStore.isAuth)
+  //   }
+  // })
+
+
+
 
 
 // console.log(name)

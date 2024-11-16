@@ -34,10 +34,12 @@ const login = async (email, password) => {
 
     promise = await account.createEmailPasswordSession(email, password);
     statusChecker = await account.get();
-    console.log(statusChecker)
-    console.log(statusChecker.$id)
-    console.log("sucsess")
-    console.log(promise)
+    const result = await account.getSession('current')
+    console.log(result)
+    // console.log(statusChecker)
+    // console.log(statusChecker.$id)
+    // console.log("sucsess")
+    // console.log(promise)
 
   if(statusChecker){
     AStore.set({
@@ -52,7 +54,7 @@ const login = async (email, password) => {
   await router.push('/')
   }catch (error){
     console.log(error)
-    window.alert("Wrong email or password")
+    window.alert("Wrong email or password", error)
   }
   
 console.log(login.error)

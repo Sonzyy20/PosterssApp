@@ -8,6 +8,8 @@ const Astore = UseAuthStore()
 const title = ref('')
 const content = ref('')
 
+
+
 const createPost = async () => {
     try{
         const post = await database.createDocument(
@@ -18,7 +20,8 @@ const createPost = async () => {
                 title: title.value,
                 content: content.value,
                 userId: Astore.userId,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                userName:   Astore.myName
             }
         );
         alert("Post was created")
@@ -37,7 +40,7 @@ const createPost = async () => {
             <UiTextarea v-model="content" placeholder="Lef your comment here"></UiTextarea>
             <UiButton class="hover:cursor-pointer" type="button" @click="createPost">Create Post</UiButton>
         </form>
-        <p>htpmlsdf</p>
+        
     </div>
 </template>
 

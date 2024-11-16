@@ -11,11 +11,26 @@ import CreatePost from '~/pages/createPost.vue';
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
-
-
-const router = useRouter(); 
 const AStore = UseAuthStore();
 
+onMounted(async() => {
+  const loggedPerson = await account.get()
+  console.log(loggedPerson)
+  if(loggedPerson){
+    AStore.set({
+      email: loggedPerson.email,
+      name: loggedPerson.name,
+      status: loggedPerson.status,
+      id: loggedPerson.$id
+    })
+
+    }
+  })
+
+const router = useRouter(); 
+
+// const checkTheSession = await account.get()
+// console.log(checkTheSession)
 
 console.log(AStore.isAuth)
 const logout = async () => {
