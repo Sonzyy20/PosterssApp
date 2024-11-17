@@ -14,7 +14,7 @@ useSeoMeta({
   title:'posts'
 })
 
-const posts = ref([])
+const posts = ref<any>([])
 // const users = ref([])
 
 onMounted(async() =>{
@@ -98,7 +98,6 @@ onMounted(async() => {
   
     <div class="main_container flext justify-center">
       <div class="cards flex flex-col flex-di items-center ">
-        <p>your id {{ AStore.userId }}</p>
         <PostTredsCards v-for="post in posts" :key="post.id" :post="post"></PostTredsCards>
       </div>
     </div>

@@ -7,6 +7,8 @@ const Astore = UseAuthStore()
 
 const title = ref('')
 const content = ref('')
+const textareaHeight = ref('auto');
+
 
 
 
@@ -31,14 +33,28 @@ const createPost = async () => {
         console.error("resson of error", error)
     }
 }
+
+
+onMounted(() => {
+  const textarea = document.getElementById('shadcn-textarea') as HTMLTextAreaElement | null;
+
+  if (textarea) {
+    // Обработчик события input
+    textarea.addEventListener('input', () => {
+      // Сбрасываем высоту на auto, чтобы получить scrollHeight
+      textarea.style.height = 'auto';
+      // Устанавливаем высоту на основе scrollHeight
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+  }
+});
 </script>
 <template>
     <div class="w-full flex flex-col items-center justify-center">
-        <p>{{ Astore.userId }}</p>
-        <form @submit.prevent="createPost">
-            <input v-model="title" type="text" required placeholder="Head of post"/>
-            <UiTextarea v-model="content" placeholder="Lef your comment here"></UiTextarea>
-            <UiButton class="hover:cursor-pointer" type="button" @click="createPost">Create Post</UiButton>
+        <form class="w-full flex flex-col items-center" @submit.prevent="createPost">
+            <input class="border border-gray-500 rounded w-1/2 mb-5 p-2" v-model="title" type="text" required placeholder="Head of post"/>
+            <UiTextarea id="shadcn-textarea" class="resize-none overflow-hidden w-1/2 broder min-h-[30px] border-gray-500 rounded  mb-4" v-model="content"  :style="{ height: textareaHeight }" placeholder="Lef your comment here"></UiTextarea>
+            <UiButton class="hover:cursor-pointer w-1/2 h-[40px]" type="button" @click="createPost">Create Post</UiButton>
         </form>
         
     </div>

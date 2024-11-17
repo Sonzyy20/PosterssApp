@@ -5,7 +5,7 @@ import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
-import CreatePost from '~/pages/createPost.vue';
+
 
 
 const pinia = createPinia()
@@ -15,7 +15,7 @@ const AStore = UseAuthStore();
 
 onMounted(async() => {
   const loggedPerson = await account.get()
-  console.log(loggedPerson)
+  
   if(loggedPerson){
     AStore.set({
       email: loggedPerson.email,
