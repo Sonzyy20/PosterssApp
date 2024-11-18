@@ -32,7 +32,7 @@ const router = useRouter();
 // const checkTheSession = await account.get()
 // console.log(checkTheSession)
 
-console.log(AStore.isAuth)
+// console.log(AStore.isAuth)
 const logout = async () => {
   await account.deleteSession('current');
   // loggedInUser.value = null;
