@@ -30,7 +30,7 @@ const createPost = async () => {
         title.value=""
         content.value=""
     }catch(error){
-        console.error("resson of error", error)
+        console.error("resson of error: ", error)
     }
 }
 
@@ -49,6 +49,8 @@ onMounted(() => {
   }
 });
 </script>
+
+
 <template>
     <div class="w-full flex flex-col items-center justify-center">
         <form class="w-full flex flex-col items-center" @submit.prevent="createPost">

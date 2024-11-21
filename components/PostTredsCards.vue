@@ -1,10 +1,9 @@
 
 <script lang="ts" setup>
 import { User } from 'lucide-vue-next';
-import { COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
+import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
 import { account, database } from '~/lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
-
 const props = defineProps({
   post: {
     type: Object,
@@ -13,18 +12,9 @@ const props = defineProps({
 });
 const emit = defineEmits(['postWasDeleted']);
 
-// console.log(props.post.userId)
+
 const Astore = UseAuthStore()
 
-// const idCeck = () :boolean => {
-//   if(props.post.userId == Astore.userId){
-//     // console.log('true')
-//     return true
-//   }else{
-//     // console.log('false')
-//     return false
-//   }
-// }
 
 const idCheck = () => {
   return props.post.userId === Astore.userId
@@ -48,6 +38,27 @@ emit('postWasDeleted', props.post.$id)
 }
 
 
+const leftComment = async (postId: string) => {
+  try{
+    await database.createDocument(
+  DB_ID,
+  COLLECTION_COMMENTS,
+  "unique()",
+  {
+   userId: Astore.userId,
+   postId: postId,
+   createdAt: new Date().toISOString(),
+   userName: Astore.myName,
+
+    
+    
+  }
+)
+  }catch{
+
+  }
+}
+
 </script>
 
 <template>
@@ -57,6 +68,33 @@ emit('postWasDeleted', props.post.$id)
       <div class="min-w-[700px] border border-gray-200"></div>
       <h1>{{ post.content }}</h1>
       <UiButton  class="cursor-pointer" @click="deletePosts(props.post.$id)" v-if="idCheck()">Delete Post</UiButton>
+      <div>
+        <UiDialog>
+    <UiDialogTrigger as-child>
+      <UiButton variant="outline">
+        Edit Profile
+      </UiButton>
+    </UiDialogTrigger>
+    <UiDialogContent class="sm:min-w-[600px]">
+      <UiDialogHeader>
+        <UiDialogTitle>Left Your Comment</UiDialogTitle>
+      </UiDialogHeader>
+      <div class="grid gap-4 py-4">      
+        <div class="grid grid-cols-4 items-center gap-4">
+          <UiLabel for="username" class="text-right">
+            Comment text
+          </UiLabel>
+          <UiTextarea class="col-span-3 resize-none"/>
+        </div>
+      </div>
+      <UiDialogFooter>
+        <Button type="submit">
+          Save changes
+        </Button>
+      </UiDialogFooter>
+    </UiDialogContent>
+  </UiDialog>
+      </div>
       
       <div class="w-full flex justify-end">
         <p class="text-slate-400">Author:</p>
