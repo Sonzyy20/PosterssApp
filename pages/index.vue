@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import {PostTredsCards} from '#components';
-import { account, database } from '../lib/appwrite';
+import { account, database, client } from '../lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
+
+import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
 
 
 const pinia = createPinia()
@@ -12,6 +14,7 @@ const app = createApp(App)
 app.use(pinia)
 const errorThrow = ref();
 const AStore = UseAuthStore();
+const documentData = ref<null | object>(null);
 
 useSeoMeta({
   title:'posts'
@@ -50,13 +53,12 @@ if(loggedPerson){
 }}catch(error){
     console.log("authText")
     errorThrow.value = error;
+
     if(process.client){
       
-      window.alert('you are not loginned');
-      navigateTo ("/login")
-    
-    
-    console.log(AStore.isAuth) 
+      window.alert('You are not logged in');
+      navigateTo("/login");
+      console.log("AStore.isAuth:", AStore.isAuth);
   }
 console.log("Your problem: ", error)
 }};
@@ -65,7 +67,42 @@ console.log("Your problem: ", error)
 onMounted(async () => {
   await fethPosts();
   await checkUserAuth();
-})
+});
+
+onMounted(() => {
+ 
+  client.subscribe([`databases.${DB_ID}.collections.${COLLECTION_POSTS}.documents`, 'files'], response => {
+    // Callback will be executed on changes for documents A and all files.
+    console.log(response);
+    // console.log(response.payload.title)
+    const isCreateEvent = response.events.some(event => event.includes('.create'));
+    const isDeleteEvent = response.events.some(event => event.includes('.delete'));
+    const isUpdateEvent = response.events.some(event => event.includes('.update'));
+    const filterAdd = (post: object) => {
+      // Проверяем, есть ли пост уже в массиве
+      if (!posts.value.some(existingPost => existingPost.$id === post.$id)) {
+        posts.value.push(post);
+      }
+    };
+
+    if (isCreateEvent) {
+        console.log('Документ был добавлен:', response.payload);
+    } else if (isDeleteEvent) {
+        console.log('Документ был удален:', response.payload);
+    } else if (isUpdateEvent) {
+        console.log('Документ был обновлен:', response.payload);
+    } else {
+        console.log('Неизвестное событие:', response.events);
+    }
+    
+    documentData.value = response.payload as object
+    filterAdd(documentData.value)
+// console.log(documentData.value.title)
+
+});
+});
+
+
 
 
 
@@ -73,6 +110,7 @@ onMounted(async () => {
     posts.value = posts.value.filter(post => post.$id !== postId)
 
   }
+  
 
 </script>
 
