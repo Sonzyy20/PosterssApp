@@ -19,7 +19,7 @@ app.use(pinia)
 const router = useRouter();
 const loggedInUser = ref(null);
 const email = ref('');
-const password = ref('');
+const password = ref(''); 
 const name = ref('');
 const usernmae = ref('');
 const statusChecker = ref(null);
@@ -86,7 +86,7 @@ const logout = async () => {
       <div class="buttons flex w-full justify-between">
 
         <UiButton class="mr-3"  type="button" @click="login(email, password)">Login</UiButton>
-        <UiButton class="mr-3" type="button" @click="register">
+        <UiButton  class="mr-3" type="button" @touchstart="register" @click="register">
           Register
         </UiButton>
         <UiButton  v-if="!loggedInUser" variant="disabled" class="line-through"  @click="logout">
