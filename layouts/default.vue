@@ -56,7 +56,7 @@ const redirectToPosts = async () => {
 
     <div class="flex items-center justify-between w-full mt-2 mb-5">
       <div class="">
-        <UiButton type="button" variant="destructive" class="btn-left mr-3 ml-5 px-4 py-2"  @click="logout">
+        <UiButton type="button" variant="destructive" class="btn-left mr-3 ml-5 px-4 py-2 cursor-pointer"  @click="logout">
           Logout
         </UiButton>
         <UiButton  type="button" @click="backToMain" class="btn-right bg-slate-50 text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black hover:bg-slate-900 hover:text-white hover:cursor-pointer">Posts</UiButton>

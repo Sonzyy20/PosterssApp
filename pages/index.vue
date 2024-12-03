@@ -7,6 +7,7 @@ import { createApp } from 'vue';
 import App from '~/app.vue';
 
 import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
+import { navigateTo, useRouter } from '#app';
 
 
 const pinia = createPinia()
@@ -15,13 +16,12 @@ app.use(pinia)
 const errorThrow = ref();
 const AStore = UseAuthStore();
 const documentData = ref<null | object>(null);
+const router = useRouter()
+const posts = ref<any>([])
 
 useSeoMeta({
   title:'posts'
 })
-
-const posts = ref<any>([])
-
 
 const fethPosts = async () => {
 try{
@@ -31,8 +31,9 @@ try{
     [] // queries (optional)
 );
   const data = await result;
-  console.log(JSON.stringify(data))
+  // console.log(JSON.stringify(data))
   posts.value = data.documents;
+  console.log(posts.value)
 
 }catch(error){
   console.log("Problem: ", error)
@@ -70,18 +71,19 @@ onMounted(async () => {
 });
 
 onMounted(() => {
- 
+  
   client.subscribe([`databases.${DB_ID}.collections.${COLLECTION_POSTS}.documents`, 'files'], response => {
     // Callback will be executed on changes for documents A and all files.
     console.log(response);
+    documentData.value = response.payload as object
     // console.log(response.payload.title)
     const isCreateEvent = response.events.some(event => event.includes('.create'));
     const isDeleteEvent = response.events.some(event => event.includes('.delete'));
     const isUpdateEvent = response.events.some(event => event.includes('.update'));
     const filterAdd = (post: object) => {
-      // Проверяем, есть ли пост уже в массиве
       if (!posts.value.some(existingPost => existingPost.$id === post.$id)) {
         posts.value.push(post);
+        console.log("post added")
       }
     };
 
@@ -94,9 +96,9 @@ onMounted(() => {
     } else {
         console.log('Неизвестное событие:', response.events);
     }
-    
-    documentData.value = response.payload as object
-    filterAdd(documentData.value)
+    if(isCreateEvent){
+      filterAdd(documentData.value)
+    }
 // console.log(documentData.value.title)
 
 });
@@ -107,7 +109,8 @@ onMounted(() => {
 
 
   const filterRemove = (postId: string) => {
-    posts.value = posts.value.filter(post => post.$id !== postId)
+    posts.value = posts.value.filter(post => post.$id !== postId);
+    console.log("post deleted")
 
   }
   

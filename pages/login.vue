@@ -79,10 +79,13 @@ const logout = async () => {
     </p>
 
     <form class="w-[50%]">
-      <UiInput class="w-[100%] mb-5" type="email" placeholder="Email" v-model="email" />
-      <UiInput class="w-[100%] mb-5" type="password" placeholder="Password" v-model="password" />
-      <UiInput class="w-[100%] " type="text" placeholder="Name" v-model="name" />
-      <p class="text-red-400" v-if="login.error">wrong password bitch</p>
+      <div class="fields mb-3">
+
+        <UiInput class="w-[100%] mb-5" type="email" placeholder="Email" v-model="email" />
+        <UiInput class="w-[100%] mb-5" type="password" placeholder="Password" v-model="password" />
+        <UiInput class="w-[100%] " type="text" placeholder="Name" v-model="name" />
+        <p class="text-red-400" v-if="login.error">wrong password bitch</p>
+      </div>
       <div class="buttons flex w-full justify-between">
 
         <UiButton class="mr-3"  type="button" @click="login(email, password)">Login</UiButton>
