@@ -1,9 +1,13 @@
 
 <script lang="ts" setup>
+// import { UiButton } from '~/components/ui/button/Button.vue';
 import { User } from 'lucide-vue-next';
-import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
+import { COLLECTION_POSTS, DB_ID, COLLECTION_COMMENTS } from '~/lib/app.constants';
 import { account, database } from '~/lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
+
+const commentContent = ref('')
+const isDialogOpen = ref(false);
 const props = defineProps({
   post: {
     type: Object,
@@ -40,24 +44,26 @@ emit('postWasDeleted', props.post.$id)
 
 const leftComment = async (postId: string) => {
   try{
-    await database.createDocument(
+   const com = await database.createDocument(
   DB_ID,
   COLLECTION_COMMENTS,
   "unique()",
   {
    userId: Astore.userId,
-   postId: postId,
+   postId: props.post.$id,
    createdAt: new Date().toISOString(),
    userName: Astore.myName,
-
-    
-    
+   content: commentContent.value
   }
-)
-  }catch{
+);
+isDialogOpen.value = false
+commentContent.value=""
+  }catch(error){
+    console.log(error)
 
   }
 }
+
 
 </script>
 
@@ -69,9 +75,9 @@ const leftComment = async (postId: string) => {
       <h1>{{ post.content }}</h1>
       <UiButton  class="cursor-pointer" @click="deletePosts(props.post.$id)" v-if="idCheck()">Delete Post</UiButton>
       <div>
-        <UiDialog>
+        <UiDialog v-model:open="isDialogOpen">
     <UiDialogTrigger as-child>
-      <UiButton variant="outline">
+      <UiButton variant="outline" @click="isDialogOpen = true">
         Edit Profile
       </UiButton>
     </UiDialogTrigger>
@@ -84,13 +90,13 @@ const leftComment = async (postId: string) => {
           <UiLabel for="username" class="text-right">
             Comment text
           </UiLabel>
-          <UiTextarea class="col-span-3 resize-none"/>
+          <UiTextarea class="col-span-3 resize-none" v-model="commentContent"/>
         </div>
       </div>
       <UiDialogFooter>
-        <Button type="submit">
-          Save changes
-        </Button>
+        <UiButton type="button" @click="leftComment">
+          Add Comment
+        </UiButton>
       </UiDialogFooter>
     </UiDialogContent>
   </UiDialog>
