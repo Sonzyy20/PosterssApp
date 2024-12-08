@@ -2,6 +2,9 @@
 import { account, ID, database } from '~/lib/appwrite';
 import { ref } from 'vue';
 import { UseAuthStore } from '~/store/autchSotre';
+import { onMounted } from 'vue';
+import { navigateTo } from 'nuxt/app';
+
 
 const Astore = UseAuthStore()
 
@@ -29,6 +32,7 @@ const createPost = async () => {
         alert("Post was created")
         title.value=""
         content.value=""
+        await navigateTo('/')
     }catch(error){
         console.error("resson of error: ", error)
     }

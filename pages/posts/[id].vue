@@ -32,11 +32,18 @@ onMounted(async () => {
 </script>
 <template>
     <div>
-        <div v-if="post">
-
-            <h1>{{ post.title }}</h1>
-            <p>{{ post.content }}</p>
+      <div class="wrapper w-full flex justify-between" v-if="post">
+        <div class="flex justify-center flex-col w-full items-center" >
+          <div class="Top w-[80%] flex items-center justify-between mb-1">
+            <h4 class="absolute text-gray-400">{{ post.userName }}</h4>
+            <div class="flex-1 text-center uppercase font-extrabold">{{ post.title }}</div>
+          </div>
+          <div class="border border-gray-300 w-[80%] h-[1px]"></div>
+          <div class="mt-4  mainContent w-[80%]">
+            <div>{{ post.content }}</div>
+          </div>
         </div>
+      </div>
         <div v-else>
             <p>пост не найден</p>
         </div>

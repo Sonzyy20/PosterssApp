@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import {PostTredsCards} from '#components';
+import PostTredsCards from '../components/PostTredsCards.vue';
 import { account, database, client } from '../lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
+import { ref } from 'vue'
 import App from '~/app.vue';
+import { onMounted } from 'vue';
 
 import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
-import { navigateTo, useRouter } from '#app';
+import { navigateTo, useRouter } from 'nuxt/app';
 
 
 const pinia = createPinia()
