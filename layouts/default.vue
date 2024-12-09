@@ -5,6 +5,9 @@ import { UseAuthStore } from '~/store/autchSotre';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
+import { onMounted } from 'vue';
+import { useRouter } from 'nuxt/app';
+import { navigateTo } from 'nuxt/app';
 
 
 
@@ -74,7 +77,17 @@ const redirectToPosts = async () => {
           
           <UiButton  type="button" @click="redirectToPosts" class="btn-right text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black mr-3 bg-slate-50 hover:bg-slate-900 hover:text-white hover:cursor-pointer">Create Post</UiButton>
           
-          <UiButton class="btn-right bg-slate-50 text-black px-4 py-4 w-24 border-solid border-2 p-2 border-black">Hello: {{ AStore.myName }}</UiButton>
+          <UiDropdownMenu>
+    <UiDropdownMenuTrigger><UiButton class="bg-slate-50 text-black border-black border-2"  >{{ AStore.myName }}</UiButton>  </UiDropdownMenuTrigger>
+    <UiDropdownMenuContent>
+      <UiDropdownMenuLabel>My Account</UiDropdownMenuLabel>
+      <UiDropdownMenuSeparator />
+      <UiDropdownMenuItem>Profile</UiDropdownMenuItem>
+      <UiDropdownMenuItem>Billing</UiDropdownMenuItem>
+      <UiDropdownMenuItem>Team</UiDropdownMenuItem>
+      <UiDropdownMenuItem><span>Log Out</span></UiDropdownMenuItem>
+    </UiDropdownMenuContent>
+  </UiDropdownMenu>
           
         </div>
       </div>

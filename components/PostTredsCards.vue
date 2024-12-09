@@ -92,7 +92,7 @@ commentContent.value=""
           <UiDialog v-model:open="isDialogOpen">
             <UiDialogTrigger as-child>
               <UiButton variant="outline" @click.stop="isDialogOpen = true">
-                Edit Profile
+                left comment
               </UiButton>
             </UiDialogTrigger>
             <UiDialogContent class="sm:min-w-[600px]">
