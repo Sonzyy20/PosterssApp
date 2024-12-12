@@ -5,7 +5,7 @@ import { User } from 'lucide-vue-next';
 import { COLLECTION_POSTS, DB_ID, COLLECTION_COMMENTS } from '~/lib/app.constants';
 import { account, database } from '~/lib/appwrite';
 import { UseAuthStore } from '~/store/autchSotre';
-import { NavigateTo } from '#app';
+import { vue } from 'vue'
 import { useRouter } from '#app';
 
 const commentContent = ref('')
