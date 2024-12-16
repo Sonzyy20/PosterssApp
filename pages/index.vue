@@ -120,7 +120,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center  w-full mt-2 mb-5">
+  <div class="flex items-center justify-center w-full mt-2 mb-5">
     <div class="main_container flext justify-center">
       <div class="cards flex flex-col flex-di items-center ">
         <PostTredsCards v-for="post in posts" :key="post.$id" :post="post" @postWasDeleted="filterRemove" ></PostTredsCards>

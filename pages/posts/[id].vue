@@ -36,8 +36,14 @@ const fethPosts = async () => {
 }};
 
 const leftComment = async() => {
+  if(!commentContent.value.trim()){
+    alert("u dont input comment text")
+    return
+  }
+
   try{
     const postComId = postId.toString()
+
    const com = await database.createDocument(
   DB_ID,
   COLLECTION_COMMENTS,
@@ -71,7 +77,7 @@ try{
       Query.equal("postId", `${postId}`)
     ]
   );
-  const postComId = postId.toString()
+
   const data = await result
   comments.value = data.documents
   console.log(postId)
@@ -128,8 +134,8 @@ onMounted(() => {
 
 </script>
 <template>
-    <div>
-      <div class="wrapper w-full flex justify-between flex-col" v-if="post">
+    <div  class="w-full"  >
+      <div class="wrapper w-[80%] flex justify-between mx-auto flex-col" v-if="post">
         <div class="flex justify-center flex-col w-full items-center" >
           <div class="Top w-[80%] flex items-center justify-between mb-1">
             <h4 class="absolute text-gray-400">{{ post.userName }}</h4>
@@ -138,13 +144,13 @@ onMounted(() => {
           <div class="border border-gray-300 w-[80%] h-[1px]"></div>
           <div class="mt-4  mainContent w-[80%]">
             <div>{{ post.content }}</div>
+            <div class="border border-gray-400 mt-10"   ></div>
           </div>
               <div class="grid w-[80%] gap-2 mt-5 mb-7">
-                <UiTextarea v-model="commentContent" placeholder="Type your message here." />
+                <UiTextarea v-model="commentContent" placeholder="Type your comment here here." />
                 <UiButton type="button" @click="leftComment"  >Send message</UiButton>
-                <div class="border border-gray-400 mt-10"   ></div>
               </div>
-            <CommentsCard v-for="comment in comments" :key="comment.$id" :comment="comment"/>
+            <CommentsCard  v-for="comment in comments" :key="comment.$id" :comment="comment"/>
         </div>
       </div>
     </div>
