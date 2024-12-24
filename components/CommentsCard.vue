@@ -38,17 +38,22 @@ const calculateDiffDays = () :string => {
 </script>
 
 <template>
-  <div class="border border-gray-500 rounded p-1 mb-2 w-[80%]  ">
-
-      <p>{{ comment.content }}  </p>
-    
-    <div class="line w-full border border-black "></div>
+  <div class=" border-gray-500 rounded p-1 mb-2 w-[80%]  ">
     <div class="flex gap-2">
-
       <p>{{ comment.userName }} </p>
       <p class="text-gray-400"  >{{ calculateDiffDays() }}</p>
+
     </div>
+
+    <div class="flex items-end w-full h-12 ">     
     
+     <div class="relative w-6 h-7 self-center">
+        <div class="absolute bottom-0 left-0 w-5 h-10 ml-2 border-l-2 border-b-2 border-gray-500 rounded-bl-[23px]"></div>
+      </div>
+      <div class="ml-1 text-gray-700">
+        <p class=""  >{{ comment.content }}  </p>
+      </div>        
+    </div>    
   </div>
 </template>
 <style>

@@ -1,3 +1,5 @@
+<!-- todo: сделать ответ на коментарии. сделать работающий провиль, добавить аватарки -->
+
 <script lang="ts" setup>
 import PostTredsCards from '../components/PostTredsCards.vue';
 import { account, database, client } from '../lib/appwrite';
