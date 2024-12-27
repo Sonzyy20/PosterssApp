@@ -7,7 +7,10 @@ import { ref } from 'vue'
 import { client } from '../../lib/appwrite';
 import { DB_ID, COLLECTION_COMMENTS } from '~/lib/app.constants';
 import CommentsCard from '~/components/CommentsCard.vue';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
+import { UsePendingStore } from '~/store/pendingStore';
+
+const loadStore = UsePendingStore();
 
 const commentContent = ref('');
 const posts = ref<any>([]);
@@ -30,7 +33,7 @@ const fethPosts = async () => {
   // console.log(JSON.stringify(data))
   posts.value = data.documents;
 
-  post.value = posts.value.find((p)=> p.$id === postId)
+  post.value = posts.value.find((post)=> post.$id === postId)
 }catch(error){
   console.log("Problem: ", error)
 }};
@@ -80,10 +83,11 @@ try{
 
   const data = await result
   comments.value = data.documents
+  
   console.log(postId)
   console.log(postId as string)
   console.log("comment fetched")
-  console.log(comments.value)
+  console.log(comments.value.length)
   
 
 }catch(error)
@@ -94,8 +98,13 @@ try{
 
 
 onMounted(async () => {
+  loadStore.pendingStatus(true)
+  console.log(loadStore.isPending)
   await fethPosts();
   await fetchComments();
+  console.log(`comments left: ${comments.value.length}`)
+  loadStore.pendingStatus(false)
+  console.log(loadStore.isPending)
 });
 onMounted(() => {
   
@@ -134,26 +143,39 @@ onMounted(() => {
 
 </script>
 <template>
-    <div  class="w-full"  >
+  <div v-if="loadStore.isPending === true">LOAD </div>
+  <div v-else>
+
+    <div  v-if="post"   class="w-full"  >
       <div class="wrapper w-[80%] flex justify-between mx-auto flex-col" v-if="post">
         <div class="flex justify-center flex-col w-full items-center" >
           <div class="Top w-[80%] flex items-center justify-between mb-1">
-            <h4 class="absolute text-gray-400">{{ post.userName }}</h4>
-            <div class="flex-1 text-center uppercase font-extrabold">{{ post.title }}</div>
+            <h4 class="absolute text-gray-400">{{ post?.userName }}</h4>
+            <div class="flex-1 text-center uppercase font-extrabold">{{ post?.title }}</div>
           </div>
           <div class="border border-gray-300 w-[80%] h-[1px]"></div>
           <div class="mt-4  mainContent w-[80%]">
-            <div>{{ post.content }}</div>
+            <div>{{ post?.content }}</div>
             <div class="border border-gray-400 mt-10"   ></div>
           </div>
-              <div class="grid w-[80%] gap-2 mt-5 mb-7">
-                <UiTextarea v-model="commentContent" placeholder="Type your comment here here." />
-                <UiButton type="button" @click="leftComment"  >Send message</UiButton>
-              </div>
+          <div class="grid w-[80%] gap-2 mt-5 mb-7">
+            <UiTextarea v-model="commentContent" placeholder="Type your comment here here." />
+            <UiButton type="button" @click="leftComment"  >Send message</UiButton>
+          </div>
+          <div v-if="comments.length != 0" class="w-[80%] h-full">
+            
             <CommentsCard  v-for="comment in comments" :key="comment.$id" :comment="comment"/>
+          </div>
+          <div v-else>No comments here</div>
+            
         </div>
       </div>
     </div>
+    <div v-else class="w-full h-[500px] flex flex-col justify-center items-center flex-wrap">
+      <P class="text-red-600 text-8xl">ERROR #404</P>
+      <p class="uppercase font-bold">Conten not fined</p>
+    </div>
+  </div>
 </template>
 
 

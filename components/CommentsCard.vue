@@ -21,13 +21,8 @@ const calculateDiffDays = () :string => {
     
   return `${diffInMinutes} minutes`
   }
-
-  else if(diffInDays <= 0){
-    console.log(diffInHours)
-    return `${diffInHours} hours ago`
-  }else{
-    console.log(diffInDays)
-    return `${diffInDays} days Ago`
+  else {
+    return `${diffInHours < 24 ? diffInHours : diffInDays} ${diffInHours < 24 ? 'hours' : 'days'}`
   }
 
 
@@ -40,7 +35,7 @@ const calculateDiffDays = () :string => {
 <template>
   <div class=" border-gray-500 rounded p-1 mb-2 w-[80%]  ">
     <div class="flex gap-2">
-      <p>{{ comment.userName }} </p>
+      <p>{{ comment?.userName }} </p>
       <p class="text-gray-400"  >{{ calculateDiffDays() }}</p>
 
     </div>
@@ -51,10 +46,11 @@ const calculateDiffDays = () :string => {
         <div class="absolute bottom-0 left-0 w-5 h-10 ml-2 border-l-2 border-b-2 border-gray-500 rounded-bl-[23px]"></div>
       </div>
       <div class="ml-1 text-gray-700">
-        <p class=""  >{{ comment.content }}  </p>
+        <p class=""  >{{ comment?.content }}  </p>
       </div>        
     </div>    
   </div>
+  <!-- <div v-else>Here no comments before</div> -->
 </template>
 <style>
 

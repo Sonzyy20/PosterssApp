@@ -4,7 +4,7 @@
 import { User } from 'lucide-vue-next';
 import { COLLECTION_POSTS, DB_ID, COLLECTION_COMMENTS } from '~/lib/app.constants';
 import { account, database } from '~/lib/appwrite';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
 import { vue } from 'vue'
 import { useRouter } from '#app';
 
@@ -50,6 +50,10 @@ emit('postWasDeleted', props.post.$id)
 
 
 const leftComment = async (postId: string) => {
+  if(!commentContent.value.trim()){
+    alert("you dont put any text to your comment")
+    return
+  }
   try{
    const com = await database.createDocument(
   DB_ID,

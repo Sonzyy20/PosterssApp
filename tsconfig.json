@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "vue", "@nuxt/schema"],
     "paths": {
       "~/*": ["./*"]
     }
@@ -18,6 +18,10 @@
   // "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 
   // https://nuxt.com/docs/guide/concepts/typescript
-  // "extends": "./.nuxt/tsconfig.json",
-  
+  "extends": "./.nuxt/tsconfig.json",
+  "include": [
+    "env.d.ts",
+    ".nuxt/nuxt.d.ts",
+    "**/*"
+  ]
 }

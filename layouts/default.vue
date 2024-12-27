@@ -1,13 +1,12 @@
 <script setup lang="ts">
 // import {PostTredsCards} from '#components';
 import { account, ID } from '../lib/appwrite';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
-import { onMounted } from 'vue';
-import { useRouter } from 'nuxt/app';
-import { navigateTo } from 'nuxt/app';
+
+
 
 
 

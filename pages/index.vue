@@ -3,7 +3,7 @@
 <script lang="ts" setup>
 import PostTredsCards from '../components/PostTredsCards.vue';
 import { account, database, client } from '../lib/appwrite';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import { ref } from 'vue'

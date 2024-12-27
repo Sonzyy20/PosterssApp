@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { account, ID, database } from '~/lib/appwrite';
 import { ref } from 'vue';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
 import { onMounted } from 'vue';
 import { navigateTo } from 'nuxt/app';
 

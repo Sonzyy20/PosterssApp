@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { account, ID } from '../lib/appwrite';
-import { UseAuthStore } from '~/store/autchSotre';
+import { UseAuthStore } from '~/store/authStore';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import App from '~/app.vue';
