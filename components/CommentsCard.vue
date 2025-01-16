@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import ContextMenuTrigger from './ui/context-menu/ContextMenuTrigger.vue';
 const posts = ref<any>([])
 
 const props = defineProps({
@@ -29,13 +30,23 @@ const calculateDiffDays = () :string => {
 
 }
 
-
+console.log(props.comment)
 </script>
 
 <template>
   <div class=" border-gray-500 rounded p-1 mb-2 w-[80%]  ">
     <div class="flex gap-2">
-      <p>{{ comment?.userName }} </p>
+      <UiContextMenu>
+        
+        <ContextMenuTrigger>
+          <p>{{ comment?.userName }} </p> 
+        </ContextMenuTrigger>
+        <UiContextMenuContent>
+          
+          <UiContextMenuItem>Delete Comment</UiContextMenuItem>
+          <UiContextMenuItem> {{comment.$id  }}</UiContextMenuItem>
+        </UiContextMenuContent>
+      </UiContextMenu>
       <p class="text-gray-400"  >{{ calculateDiffDays() }}</p>
 
     </div>
