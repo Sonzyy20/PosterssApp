@@ -20,7 +20,7 @@ export function useLogoutLogic() {
   
        
         await router.push('/login');
-      } catch (error) {
+      } catch (error) { 
         console.error('Error during logout:', error);
       }
     };

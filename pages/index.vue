@@ -10,10 +10,12 @@ import { ref } from 'vue'
 import App from '~/app.vue';
 import { onMounted } from 'vue';
 
-import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
+// import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
 import { navigateTo, useRouter } from 'nuxt/app';
 
+const {DB_ID, COLLECTION_POSTS} = useRuntimeConfig().public;
 
+console.log(process.env)
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)

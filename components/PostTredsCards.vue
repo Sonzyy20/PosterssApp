@@ -2,7 +2,6 @@
 <script lang="ts" setup>
 // import { UiButton } from '~/components/ui/button/Button.vue';
 import { User } from 'lucide-vue-next';
-import { COLLECTION_POSTS, DB_ID, COLLECTION_COMMENTS } from '~/lib/app.constants';
 import { account, database } from '~/lib/appwrite';
 import { UseAuthStore } from '~/store/authStore';
 import { vue } from 'vue'

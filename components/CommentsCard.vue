@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import ContextMenuTrigger from './ui/context-menu/ContextMenuTrigger.vue';
+import {database} from "../lib/appwrite"
 const posts = ref<any>([])
-
+  const {DB_ID, COLLECTION_POSTS, COLLECTION_COMMENTS} = useRuntimeConfig().public;
 const props = defineProps({
   comment: {
     type: Object,
@@ -25,16 +26,45 @@ const calculateDiffDays = () :string => {
   else {
     return `${diffInHours < 24 ? diffInHours : diffInDays} ${diffInHours < 24 ? 'hours' : 'days'}`
   }
+}
+const emit = defineEmits(['udateCommentsList'])
 
-
-
+function notifyParent(){
+  const commentData = props.comment.$id;
+  emit ('udateCommentsList', commentData)
 }
 
+
+const  buttonCheck = async (commentId:string) => {
+  notifyParent();   
+  const commentElement = document.getElementById(`comment-${commentId}`);
+    
+    console.log(commentElement)
+
+      // commentElement.classList.add('transition', 'opacity-0', 'duration-700');
+      
+   
+  setTimeout(async () => {
+    try{
+        
+        console.log("button work, dont worry")
+        await database.deleteDocument(
+          DB_ID as string,
+          COLLECTION_COMMENTS as string,
+          commentId 
+        )
+        
+        
+      }catch(error){
+        console.log(error)
+      }
+    }, 2000);
+}
 console.log(props.comment)
 </script>
 
 <template>
-  <div class=" border-gray-500 rounded p-1 mb-2 w-[80%]  ">
+  <div class=" border-gray-500 rounded p-1 mb-2 w-[80%] box-border" :id="`comment-${comment.$id}`">
     <div class="flex gap-2">
       <UiContextMenu>
         
@@ -43,8 +73,8 @@ console.log(props.comment)
         </ContextMenuTrigger>
         <UiContextMenuContent>
           
-          <UiContextMenuItem>Delete Comment</UiContextMenuItem>
-          <UiContextMenuItem> {{comment.$id  }}</UiContextMenuItem>
+          <UiContextMenuItem @click="buttonCheck(comment?.$id)" >Delete Comment</UiContextMenuItem>
+          <UiContextMenuItem> {{comment?.$id  }}</UiContextMenuItem>
         </UiContextMenuContent>
       </UiContextMenu>
       <p class="text-gray-400"  >{{ calculateDiffDays() }}</p>

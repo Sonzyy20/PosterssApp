@@ -8,5 +8,12 @@ export default defineNuxtConfig({
     prefix: 'Ui',
     
     componentDir: './components/ui'
+  },
+  runtimeConfig: {
+    public: {
+      DB_ID: process.env.NUXT_DB_ID,
+      COLLECTION_POSTS: process.env.NUXT_COLLECTION_POSTS,
+      COLLECTION_COMMENTS: process.env.NUXT_COLLECTION_COMMENTS
+    }
   }
 })
