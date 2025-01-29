@@ -82,7 +82,7 @@ onMounted(()=>{
 
 const fetchComments = async () => {
   try {
-    const result = await database.listDocuments(DB_ID as string, COLLECTION_COMMENTS as string, [
+    const result = await database.listDocuments(DB_ID, COLLECTION_COMMENTS, [
       Query.equal("postId", `${postId}`),
     ]);
 
