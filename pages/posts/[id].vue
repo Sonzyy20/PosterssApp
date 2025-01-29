@@ -86,6 +86,9 @@ const fetchComments = async () => {
       Query.equal("postId", `${postId}`),
     ]);
 console.log(postId)
+console.log(DB_ID)
+  console.log(COLLECTION_COMMENTS)
+
     const data = await result;
     comments.value = data.documents;
 
