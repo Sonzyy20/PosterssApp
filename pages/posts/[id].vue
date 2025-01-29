@@ -43,7 +43,7 @@ const fethPosts = async () => {
     posts.value = data.documents;
    
 
-    post.value = posts.value.find((post: Post) => post.$id === postId);
+    post.value = posts.value.find((post) => post.$id === postId);
   } catch (error) {
     console.log("Problem: ", error);
   }
@@ -58,8 +58,8 @@ const leftComment = async () => {
   try {
     const postComId = postId.toString();
     await database.createDocument(
-      DB_ID as string,
-      COLLECTION_COMMENTS as string,
+      DB_ID,
+      COLLECTION_COMMENTS,
       "unique()",
       {
         userId: Astore.userId,
@@ -141,7 +141,7 @@ onMounted(() => {
       const filterAdd = (comment: object) => {
         if (
           !comments.value.some(
-            (existingComment: Post) => existingComment.$id === postId
+            (existingComment) => existingComment.$id === postId
           )
         ) {
           comments.value.push(comment);
@@ -158,7 +158,7 @@ onMounted(() => {
 
 const filterRemoveComments = (commentData: string) => {
   // Находим комментарий
-  const comment = comments.value.find((comment: Post) => comment.$id === commentData);
+  const comment = comments.value.find((comment) => comment.$id === commentData);
   
   const commentElement = document.getElementById(`comment-${commentData}`);
   if (commentElement) {

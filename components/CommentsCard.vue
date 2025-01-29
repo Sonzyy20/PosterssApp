@@ -38,16 +38,10 @@ function notifyParent(){
 const  buttonCheck = async (commentId:string) => {
   notifyParent();   
   const commentElement = document.getElementById(`comment-${commentId}`);
-    
-    console.log(commentElement)
-
-      // commentElement.classList.add('transition', 'opacity-0', 'duration-700');
-      
-   
   setTimeout(async () => {
     try{
         
-        console.log("button work, dont worry")
+        
         await database.deleteDocument(
           DB_ID as string,
           COLLECTION_COMMENTS as string,
@@ -60,7 +54,7 @@ const  buttonCheck = async (commentId:string) => {
       }
     }, 2000);
 }
-console.log(props.comment)
+
 </script>
 
 <template>
