@@ -85,13 +85,13 @@ const fetchComments = async () => {
     const result = await database.listDocuments(DB_ID, COLLECTION_COMMENTS, [
       Query.equal("postId", `${postId}`),
     ]);
-
+console.log(postId)
     const data = await result;
     comments.value = data.documents;
 
     
   } catch (error) {
-    console.log(error);
+    console.log(error, "problem with fetching");
   }
 };
 

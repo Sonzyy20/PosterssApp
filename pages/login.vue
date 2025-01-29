@@ -27,7 +27,7 @@ const statusChecker = ref(null);
 const AStore = UseAuthStore();
 
 const login = async (email, password) => {
-  console.log("1")
+
   let promise
   let statusChecker
   try{
@@ -35,11 +35,7 @@ const login = async (email, password) => {
     promise = await account.createEmailPasswordSession(email, password);
     statusChecker = await account.get();
     const result = await account.getSession('current')
-    console.log(result)
-    // console.log(statusChecker)
-    // console.log(statusChecker.$id)
-    // console.log("sucsess")
-    // console.log(promise)
+  
 
   if(statusChecker){
     AStore.set({
@@ -49,15 +45,14 @@ const login = async (email, password) => {
       id: statusChecker.$id
     })
   }
-  console.log(statusChecker.status);
-  console.log(AStore.isAuth)
+  
   await router.push('/')
   }catch (error){
     console.log(error)
     window.alert("Wrong email or password", error)
   }
   
-console.log(login.error)
+
   
 };
 
