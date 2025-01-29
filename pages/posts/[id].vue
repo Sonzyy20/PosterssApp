@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from "#app";
+// import { useRoute } from "#app";
 import { onMounted } from "vue";
 import { database } from "../../lib/appwrite";
 import { Query } from "appwrite";
@@ -14,12 +14,22 @@ const loadStore = UsePendingStore();
 
 const commentContent = ref("");
 const posts = ref<any>([]);
-const post = ref(null);
+const post = ref<object | null>(null);
 const comments = ref<any>([]);
 const route = useRoute();
 const postId = route.params.id;
 const Astore = UseAuthStore();
 const documentData = ref<null | object>(null);
+// let commentInput = document.getElementById("commentInput");
+interface Post{
+  title: string,
+  content: string,
+  userId: string,
+  createdAt: string,
+  username:string,
+  $id: string,
+}
+
 
 const fethPosts = async () => {
   try {
@@ -29,10 +39,11 @@ const fethPosts = async () => {
       [] // queries (optional)
     );
     const data = await result;
-    // console.log(JSON.stringify(data))
+    
     posts.value = data.documents;
+   
 
-    post.value = posts.value.find((post) => post.$id === postId);
+    post.value = posts.value.find((post: Post) => post.$id === postId);
   } catch (error) {
     console.log("Problem: ", error);
   }
@@ -46,7 +57,6 @@ const leftComment = async () => {
 
   try {
     const postComId = postId.toString();
-    console.log("db ID", DB_ID)
     await database.createDocument(
       DB_ID as string,
       COLLECTION_COMMENTS as string,
@@ -65,18 +75,21 @@ const leftComment = async () => {
   }
 };
 
+onMounted(()=>{
+
+
+})
+
 const fetchComments = async () => {
   try {
-    const result = await database.listDocuments(DB_ID, COLLECTION_COMMENTS, [
+    const result = await database.listDocuments(DB_ID as string, COLLECTION_COMMENTS as string, [
       Query.equal("postId", `${postId}`),
     ]);
 
     const data = await result;
     comments.value = data.documents;
 
-    console.log(postId);
-    console.log("comment fetched");
-    console.log(comments.value.length);
+    
   } catch (error) {
     console.log(error);
   }
@@ -87,6 +100,23 @@ onMounted(async () => {
   await fethPosts();
   await fetchComments();
   loadStore.pendingStatus(false);
+  nextTick(()=>{
+
+  if(typeof window !== "undefined"){
+    
+    const commentInput = document.getElementById("commentInput") as HTMLInputElement | null;
+   
+    if (commentInput) {
+      commentInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          
+          document.getElementById("commentButton")?.click();
+        }
+      });
+    }
+  }
+});
 });
 onMounted(() => {
   client.subscribe(
@@ -96,9 +126,9 @@ onMounted(() => {
     ],
     (response) => {
       // Callback will be executed on changes for documents A and all files.
-      console.log(response);
+     
       documentData.value = response.payload as object;
-      // console.log(response.payload.title)
+      
       const isCreateEvent = response.events.some((event) =>
         event.includes(".create")
       );
@@ -111,44 +141,43 @@ onMounted(() => {
       const filterAdd = (comment: object) => {
         if (
           !comments.value.some(
-            (existingComment) => existingComment.$id === postId
+            (existingComment: Post) => existingComment.$id === postId
           )
         ) {
           comments.value.push(comment);
-          console.log("post added");
+          
         }
       };
-
-      if (isCreateEvent) {
-        console.log("Документ был добавлен:", response.payload);
-      } else if (isDeleteEvent) {
-        console.log("Документ был удален:", response.payload);
-      } else if (isUpdateEvent) {
-        console.log("Документ был обновлен:", response.payload);
-      } else {
-        console.log("Неизвестное событие:", response.events);
-      }
       if (isCreateEvent) {
         filterAdd(documentData.value);
       }
-      // console.log(documentData.value.title)
+      
     }
   );
 });
 
-const filterRemoveComments = (commentData) => {
+const filterRemoveComments = (commentData: string) => {
   // Находим комментарий
-  const comment = comments.value.find((comment) => comment.$id === commentData);
+  const comment = comments.value.find((comment: Post) => comment.$id === commentData);
   
-  if (commentIndex !== -1) {
-    // Устанавливаем флаг, что элемент удаляется
-    comments.value[commentIndex].isRemoving = true;
-
-    // После анимации удаляем комментарий
-    setTimeout(() => {
-      comments.value.splice(commentIndex, 1);
-    }, 500); // Задержка равна времени анимации
+  const commentElement = document.getElementById(`comment-${commentData}`);
+  if (commentElement) {
+    const rect = commentElement.getBoundingClientRect();
+    commentElement.style.position = "absolute";
+    commentElement.style.width = `${rect.width}px`;
+    commentElement.style.height = `${rect.height}px`;
+    commentElement.style.left = `${rect.left}px`;
   }
+
+
+
+
+    comment.isRemoving = true; // Флаг для начала анимации
+    setTimeout(() => {
+      // Удаляем комментарий после анимации
+      comments.value = comments.value.filter((comment: Post) => comment.$id !== commentData);
+    }, 2000); // Время анимации
+  
 };
 
 
@@ -176,13 +205,14 @@ const filterRemoveComments = (commentData) => {
           </div>
           <div class="grid w-[80%] gap-2 mt-5 mb-7">
             <UiTextarea
+            id="commentInput"
               v-model="commentContent"
               placeholder="Type your comment here here."
             />
-            <UiButton type="button" @click="leftComment">Send message</UiButton>
+            <UiButton id="commentButton" type="button" @click="leftComment">Send message</UiButton>
           </div>
           <div v-if="comments.length != 0" class="w-[80%] h-full">
-            <transition-group name="fade" tag="div" class="container">
+            <transition-group name="fade" tag="div" class="container" mode="default">
             
               <CommentsCard
               @udateCommentsList = "filterRemoveComments"
@@ -209,9 +239,24 @@ const filterRemoveComments = (commentData) => {
 </template>
 
 <style scoped>
+@keyframes smoothMoveUp {
+  0% {
+    transform: translateY(5px);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  overflow: hidden;
 }
 
 .fade-enter-from,
@@ -221,9 +266,12 @@ const filterRemoveComments = (commentData) => {
 }
 
 .fade-leave-active {
-  position: absolute;  /* Убирает элемент из потока */
-  width: 100%;  /* Сохраняет ширину для анимации */
-  z-index:-1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.fade-move {
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
 }
 .comment {
   position: relative; /* Можно использовать absolute, если нужно, чтобы избежать наложений */

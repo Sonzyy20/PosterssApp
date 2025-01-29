@@ -14,10 +14,10 @@ const calculateDiffDays = () :string => {
 
   const endTime = props.comment.createdAt
   
-  const currentTime = new Date()
+  const currentTime = new Date() as unknown as string
   const diffTime = Date.parse(currentTime) - Date.parse(endTime)
   const diffInDays = Math.round(diffTime/(1000 * 3600 * 24))
-  const diffInHours = (diffTime/(1000 * 3600))
+  const diffInHours = Math.round(diffTime/(1000 * 3600))
   const diffInMinutes = Math.round(diffTime/(1000 * 60))
   if(diffInHours<1){
     

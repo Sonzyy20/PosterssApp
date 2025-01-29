@@ -4,8 +4,9 @@
 import { User } from 'lucide-vue-next';
 import { account, database } from '~/lib/appwrite';
 import { UseAuthStore } from '~/store/authStore';
-import { vue } from 'vue'
-import { useRouter } from '#app';
+// import { vue } from 'vue'
+// import { useRouter } from '#app';
+const {DB_ID, COLLECTION_POSTS, COLLECTION_COMMENTS} = useRuntimeConfig().public;
 
 const commentContent = ref('')
 const isDialogOpen = ref(false);

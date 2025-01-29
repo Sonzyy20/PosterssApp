@@ -9,13 +9,15 @@ import { createApp } from 'vue';
 import { ref } from 'vue'
 import App from '~/app.vue';
 import { onMounted } from 'vue';
-
-// import { COLLECTION_COMMENTS, COLLECTION_POSTS, DB_ID } from '~/lib/app.constants';
 import { navigateTo, useRouter } from 'nuxt/app';
+
+interface Post extends Object{
+  $id: string
+}
 
 const {DB_ID, COLLECTION_POSTS} = useRuntimeConfig().public;
 
-console.log(process.env)
+
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
@@ -37,9 +39,9 @@ try{
     [] // queries (optional)
 );
   const data = await result;
-  // console.log(JSON.stringify(data))
+  
   posts.value = data.documents;
-  console.log(posts.value)
+ 
 
 }catch(error){
   console.log("Problem: ", error)
@@ -58,14 +60,14 @@ if(loggedPerson){
     id: loggedPerson.$id
   })  
 }}catch(error){
-    console.log("authText")
+ 
     errorThrow.value = error;
 
     if(process.client){
       
       window.alert('You are not logged in');
       navigateTo("/login");
-      console.log("AStore.isAuth:", AStore.isAuth);
+      
   }
 console.log("Your problem: ", error)
 }};
@@ -80,32 +82,22 @@ onMounted(() => {
   
   client.subscribe([`databases.${DB_ID}.collections.${COLLECTION_POSTS}.documents`, 'files'], response => {
     // Callback will be executed on changes for documents A and all files.
-    console.log(response);
+    
     documentData.value = response.payload as object
-    // console.log(response.payload.title)
+    
     const isCreateEvent = response.events.some(event => event.includes('.create'));
     const isDeleteEvent = response.events.some(event => event.includes('.delete'));
     const isUpdateEvent = response.events.some(event => event.includes('.update'));
-    const filterAdd = (post: object) => {
-      if (!posts.value.some(existingPost => existingPost.$id === post.$id)) {
+    const filterAdd = (post: Post) => {
+      if (!posts.value.some((existingPost: Post) => existingPost.$id === post.$id)) {
         posts.value.push(post);
-        console.log("post added")
+        console.log(post)
+        
       }
     };
-
-    if (isCreateEvent) {
-        console.log('Документ был добавлен:', response.payload);
-    } else if (isDeleteEvent) {
-        console.log('Документ был удален:', response.payload);
-    } else if (isUpdateEvent) {
-        console.log('Документ был обновлен:', response.payload);
-    } else {
-        console.log('Неизвестное событие:', response.events);
-    }
     if(isCreateEvent){
-      filterAdd(documentData.value)
+      filterAdd(documentData.value as Post)
     }
-// console.log(documentData.value.title)
 
 });
 });
@@ -115,8 +107,8 @@ onMounted(() => {
 
 
   const filterRemove = (postId: string) => {
-    posts.value = posts.value.filter(post => post.$id !== postId);
-    console.log("post deleted")
+    posts.value = posts.value.filter((post: { $id: string; }) => post.$id !== postId);
+   
 
   }
   
